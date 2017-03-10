@@ -57,4 +57,47 @@
   };
 
   // ADD YOUR CODE HERE
+  $('.btn-large').click(function(event){
+    event.preventDefault();
+    // console.log('clicked')
+    var userSearch = $('#search').val();
+    $.ajax({
+      //method for the HTTP request e.g. GET, POST, ..
+      method: 'GET',
+      //url is the place where the data lives
+      url: `http://omdbapi.com/?s=${userSearch}`,
+      //the format of data you want to get back
+      dataType: 'json',
+      //stuff that happens if I get the data I want back
+      success: function(data) {
+    //Clears movies entries
+     movies.length = 0;
+
+     for (var i = 0; i < data.Search.length; i++) {
+       var year = data.Search[i].Year
+       var title = data.Search[i].Title
+       var poster = data.Search[i].Poster
+       var id = data.Search[i].imdbID
+
+       movies.push({
+         year: year,
+         title: title,
+         poster: poster,
+         id: id
+       });
+       renderMovies();
+     }
+},
+      // what to do if I don't get what I want
+      error: function(){
+        console.log('error');
+      }
+    })
+  })
+
+
+
+
+
+
 })();
